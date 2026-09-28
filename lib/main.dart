@@ -1,3 +1,4 @@
+```dart
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -101,9 +102,7 @@ class MobileLayout extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Travel Dashboard'),
       ),
-      body: const Center(
-        child: Text('Mobile Layout'),
-      ),
+      body: const DealDashboard(),
       bottomNavigationBar: BottomAppBar(
         child: Row(
           children: navItems,
@@ -145,12 +144,102 @@ class DesktopLayout extends StatelessWidget {
             ),
           ),
           const Expanded(
-            child: Center(
-              child: Text('Desktop Layout'),
-            ),
+            child: DealDashboard(),
           ),
         ],
       ),
     );
   }
 }
+
+class DealDashboard extends StatelessWidget {
+  const DealDashboard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final deals = [
+      TravelDeal(
+        'Paris Adventure',
+        799,
+        'Explore the city of lights.',
+        false,
+      ),
+      TravelDeal(
+        'Tokyo Getaway',
+        999,
+        'Experience Tokyo and its culture.',
+        true,
+      ),
+      TravelDeal(
+        'Caribbean Escape',
+        699,
+        'Relax on beautiful beaches.',
+        false,
+      ),
+      TravelDeal(
+        'Swiss Alps',
+        899,
+        'Explore the mountains of Switzerland.',
+        true,
+      ),
+    ];
+
+    return SafeArea(
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          if (constraints.maxWidth > 400) {
+            return GridView.count(
+              crossAxisCount: 2,
+              padding: const EdgeInsets.all(16),
+              crossAxisSpacing: 16,
+              mainAxisSpacing: 16,
+              children: [
+                for (final deal in deals) DealCard(deal: deal),
+              ],
+            );
+          }
+
+          return ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
+              for (final deal in deals) DealCard(deal: deal),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+class DealCard extends StatelessWidget {
+  final TravelDeal deal;
+
+  const DealCard({
+    super.key,
+    required this.deal,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              deal.title,
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              '\$${deal.price.toStringAsFixed(2)}',
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
