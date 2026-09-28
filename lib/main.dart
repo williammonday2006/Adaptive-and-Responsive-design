@@ -47,27 +47,109 @@ class TravelApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const HomePage(),
+      home: const TravelHomePage(),
     );
   }
 }
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class TravelHomePage extends StatelessWidget {
+  const TravelHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final destination = Destination('Paris', Icons.location_city);
+    final destinations = [
+      Destination('Home', Icons.home),
+      Destination('Explore', Icons.explore),
+      Destination('Bookings', Icons.book),
+      Destination('Profile', Icons.person),
+    ];
+
+    final width = MediaQuery.sizeOf(context).width;
+
+    if (width < 600) {
+      return MobileLayout(destinations: destinations);
+    }
+
+    return DesktopLayout(destinations: destinations);
+  }
+}
+
+class MobileLayout extends StatelessWidget {
+  final List<Destination> destinations;
+
+  const MobileLayout({
+    super.key,
+    required this.destinations,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final navItems = <Widget>[];
+
+    for (final destination in destinations) {
+      navItems.add(
+        Expanded(
+          child: ListTile(
+            leading: Icon(destination.icon),
+            onTap: () {},
+          ),
+        ),
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Universal Travel Dashboard'),
+        title: const Text('Travel Dashboard'),
       ),
-      body: Center(
-        child: Text(
-          destination.name,
-          style: Theme.of(context).textTheme.displayLarge,
+      body: const Center(
+        child: Text('Mobile Layout'),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          children: navItems,
         ),
+      ),
+    );
+  }
+}
+
+class DesktopLayout extends StatelessWidget {
+  final List<Destination> destinations;
+
+  const DesktopLayout({
+    super.key,
+    required this.destinations,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final navItems = <Widget>[];
+
+    for (final destination in destinations) {
+      navItems.add(
+        ListTile(
+          leading: Icon(destination.icon),
+          title: Text(destination.name),
+          onTap: () {},
+        ),
+      );
+    }
+
+    return Scaffold(
+      body: Row(
+        children: [
+          SizedBox(
+            width: 200,
+            child: Column(
+              children: navItems,
+            ),
+          ),
+          const Expanded(
+            child: Center(
+              child: Text('Desktop Layout'),
+            ),
+          ),
+        ],
       ),
     );
   }
