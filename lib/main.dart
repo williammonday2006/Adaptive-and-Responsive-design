@@ -1,4 +1,3 @@
-```dart
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -194,7 +193,8 @@ class DealDashboard extends StatelessWidget {
               crossAxisSpacing: 16,
               mainAxisSpacing: 16,
               children: [
-                for (final deal in deals) DealCard(deal: deal),
+                for (final deal in deals)
+                  DealCard(deal: deal),
               ],
             );
           }
@@ -202,7 +202,8 @@ class DealDashboard extends StatelessWidget {
           return ListView(
             padding: const EdgeInsets.all(16),
             children: [
-              for (final deal in deals) DealCard(deal: deal),
+              for (final deal in deals)
+                DealCard(deal: deal),
             ],
           );
         },
@@ -221,7 +222,8 @@ class DealCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    final card = Card(
+      color: Theme.of(context).colorScheme.surfaceContainer,
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -236,10 +238,57 @@ class DealCard extends StatelessWidget {
               '\$${deal.price.toStringAsFixed(2)}',
               style: Theme.of(context).textTheme.bodyMedium,
             ),
+            const SizedBox(height: 8),
+            Text(
+              deal.description,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
           ],
         ),
       ),
     );
+
+    if (deal.isPremium) {
+      return Theme(
+        data: Theme.of(context).copyWith(
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.deepOrange,
+            brightness: Brightness.light,
+          ),
+        ),
+        child: Card(
+          color: Theme.of(context).colorScheme.primaryContainer,
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'PREMIUM',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  deal.title,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  '\$${deal.price.toStringAsFixed(2)}',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  deal.description,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    return card;
   }
-}
-```
+

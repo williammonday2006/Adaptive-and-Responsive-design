@@ -15,3 +15,9 @@ MediaQuery can be used to check the width and height of the screen as well as ot
 We use LayoutBuilder here because we want to know how much space the specific content area has available. MediaQuery measures the overall window, but the DealDashboard might only occupy part of that window.
 
 LayoutBuilder lets the dashboard switch between a one-column list and a two-column grid based on its actual available width.
+
+### Phase 4
+
+I would prefer using ThemeData and local Theme overrides for specialized widgets because it keeps the design organized and makes it easier to maintain a consistent visual style.
+
+Hard-coding values directly in widgets can be simpler for a small component, but it can become difficult to update when the application has many widgets using the same styles. Using themes makes those styles easier to change and reuse.
